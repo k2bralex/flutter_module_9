@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:dio/dio.dart';
 
-import '../models/card.dart';
+import '../models/hotel_card.dart';
 import 'grid_view.dart';
 import 'list_view.dart';
 import 'my_app_bar.dart';
@@ -16,7 +16,8 @@ class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
-
+///Use [Dio] to get data from server. Deserialize into model [HotelCard].
+///View model list due to selected mode
 class _MyHomePageState extends State<MyHomePage> {
   int index = 0;
   final Dio _dio = Dio();
@@ -74,58 +75,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-/*
-class _MyHomePageState extends State<MyHomePage> {
-  int viewModeIndex = 0;
-
-  void updateIndex(int newIndex) {
-    setState(() {
-      viewModeIndex = newIndex;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actionsIconTheme: const IconThemeData(size: 30.0),
-        centerTitle: true,
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: IconButton(
-              icon: const Icon(
-                Icons.list,
-                color: Colors.white,
-              ),
-              onPressed: () => {
-                setState(() {
-                  viewModeIndex = 0;
-                }),
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: IconButton(
-              icon: const Icon(
-                Icons.grid_view,
-                color: Colors.white,
-              ),
-              onPressed: () => {
-                setState(() {
-                  viewModeIndex = 1;
-                },),
-              },
-            ),
-          )
-        ],
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: viewModeIndex == 0 ? Text("list view") : Text("grid view"),
-      ),
-    );
-  }
-}*/

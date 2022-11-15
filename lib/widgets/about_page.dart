@@ -5,13 +5,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 import '../models/hotel.dart';
 
-List<Widget> images = [
-  Image.asset("assets/images/134093.jpg"),
-  Image.asset("assets/images/134094.jpg"),
-  Image.asset("assets/images/134095.jpg"),
-  Image.asset("assets/images/134096.jpg"),
-];
-
 class AboutPage extends StatefulWidget {
   static const routeName = "/detail";
   final String uuid;
@@ -22,6 +15,8 @@ class AboutPage extends StatefulWidget {
   State<AboutPage> createState() => _AboutPageState();
 }
 
+///Use [Dio] get detailed data about selected hotel.
+///Load into widget if "ok" else output error message
 class _AboutPageState extends State<AboutPage> {
   final Dio _dio = Dio();
   late Hotel _hotel;
@@ -30,12 +25,6 @@ class _AboutPageState extends State<AboutPage> {
   bool hasError = false;
   String errorMessage = "";
 
-  @override
-  void initState() {
-    super.initState();
-    getHotelDetail();
-  }
-
   static const List<String> details = [
     "Country",
     "City",
@@ -43,6 +32,12 @@ class _AboutPageState extends State<AboutPage> {
     "Country",
     "Price",
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    getHotelDetail();
+  }
 
   List<Widget> getHotelDetails(Hotel h) {
     List<String> values = [
@@ -139,8 +134,18 @@ class _AboutPageState extends State<AboutPage> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: CarouselSlider(
-                              items: List.generate(images.length, (index) => Container(margin: EdgeInsets.all(6.0), child: images[index],)),
-                              options: CarouselOptions(height: 200)),
+                            items: List.generate(
+                                _hotel.photos.length,
+                                (index) => Container(
+                                      margin: const EdgeInsets.all(6.0),
+                                      child: Image.asset(
+                                        "assets/images/${_hotel.photos[index]}",
+                                        fit: BoxFit.contain,
+                                      ),
+                                    )),
+                            options: CarouselOptions(
+                                height: 200, viewportFraction: 0.7),
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),

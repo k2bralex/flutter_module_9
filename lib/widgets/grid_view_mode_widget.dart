@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_module_9/models/card.dart';
+import 'package:flutter_module_9/models/hotel_card.dart';
 
 class GridViewModeWidget extends StatelessWidget {
-  final HotelCard card;
+  final HotelCard hotelCard;
 
-  const GridViewModeWidget({super.key, required this.card});
+  const GridViewModeWidget({super.key, required this.hotelCard});
 
   @override
   Widget build(BuildContext context) {
@@ -26,17 +26,16 @@ class GridViewModeWidget extends StatelessWidget {
                   topRight: Radius.circular(20),
                 ),
                 child: Image.asset(
-                  //card.poster
-                  "assets/images/134093.jpg",
+                  "assets/images/${hotelCard.poster}",
                   fit: BoxFit.cover,
-                  //height: 100,
+                  height: 100,
                 ),
               ),
             ),
             Flexible(
                 flex: 2,
                 child: Center(
-                  child: Text(card.name),
+                  child: Text(hotelCard.name),
                 )),
             Flexible(
               flex: 1,
@@ -47,8 +46,8 @@ class GridViewModeWidget extends StatelessWidget {
                             bottomLeft: Radius.circular(20),
                             bottomRight: Radius.circular(20)))),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/detail', arguments: card.uuid);
-                  print("Details");
+                  Navigator.pushNamed(context, '/detail', arguments: hotelCard.uuid);
+                  //print("Details");
                 },
                 child: const Text("Details"),
               ),

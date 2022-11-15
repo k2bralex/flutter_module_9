@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'card.g.dart';
+part 'hotel_card.g.dart';
 
 @JsonSerializable()
 class HotelCard {

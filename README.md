@@ -4,13 +4,14 @@ Flutter working with forms. JSON. HTTP request.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Используя библиотеки json_serializable и build_runner, получить данные с сервера.
+Создать приложения для просмотра отелей и детальной информаци по ним.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Получить список отелей
+- При загрузке отобразите прелоадер. Карточки с отелями могут отображаться в виде списка и плитки. Для переключения вида
+  в AppBar есть две иконки (список и плитка).
+- При клике на кнопку «Подробнее» настройте переход на страницу с детальной информацией об отеле. На ней должен
+  присутствовать slider carousel и поля: страна, город, улица, рейтинг, сервисы (платные и бесплатные).
+- Создать классы и использовать json_serializable для работы с отелями и вложенными данными отелей.
+- Обработать ошибки сервера: если информация об отеле недоступна, возвращайте код ошибки 404 и message. Сообщение с
+  ошибкой отобразите на экране.

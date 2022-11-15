@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/card.dart';
+import '../models/hotel_card.dart';
 import 'grid_view_mode_widget.dart';
 
 class GridViewMode extends StatelessWidget {
@@ -12,6 +12,7 @@ class GridViewMode extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.count(
         crossAxisCount: 2,
-        children: cards.map((card) => GridViewModeWidget(card: card)).toList());
+        children:
+            cards.map((card) => GridViewModeWidget(hotelCard: card)).toList());
   }
 }

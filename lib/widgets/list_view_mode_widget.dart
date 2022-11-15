@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_module_9/models/card.dart';
+import 'package:flutter_module_9/models/hotel_card.dart';
 
 class ListViewModeWidget extends StatelessWidget {
-  final HotelCard card;
+  final HotelCard hotelCard;
 
-  const ListViewModeWidget({super.key, required this.card});
+  const ListViewModeWidget({super.key, required this.hotelCard});
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +26,7 @@ class ListViewModeWidget extends StatelessWidget {
                   topRight: Radius.circular(20),
                 ),
                 child: Image.asset(
-                  //card.poster,
-                  "assets/images/134093.jpg",
+                  "assets/images/${hotelCard.poster}",
                   fit: BoxFit.cover,
                   height: 200,
                 ),
@@ -40,7 +39,7 @@ class ListViewModeWidget extends StatelessWidget {
                         flex: 3,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10.0),
-                          child: Text(card.name),
+                          child: Text(hotelCard.name),
                         )),
                     Expanded(
                       flex: 1,
@@ -50,7 +49,7 @@ class ListViewModeWidget extends StatelessWidget {
                           onPressed: () {
                             //print("${card.uuid}");
                             Navigator.pushNamed(context, '/detail',
-                                arguments: card.uuid);
+                                arguments: hotelCard.uuid);
                           },
                           child: const Text("Details"),
                         ),
