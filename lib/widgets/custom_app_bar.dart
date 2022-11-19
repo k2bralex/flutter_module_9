@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 typedef ButtonClickCallback = void Function(int index);
 
-class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final ButtonClickCallback onButtonClick;
 
-  MyAppBar({super.key, required this.onButtonClick});
+  const CustomAppBar({super.key, required this.onButtonClick});
 
   @override
   Widget build(BuildContext context) {

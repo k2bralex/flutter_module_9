@@ -3,27 +3,24 @@ import 'package:flutter/material.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 
+import '../src/fetch_hotel_details.dart';
 import '../models/hotel.dart';
 
 class AboutPage extends StatefulWidget {
   static const routeName = "/detail";
   final String uuid;
+  late String path;
 
-  const AboutPage({super.key, required this.uuid});
+  AboutPage({super.key, required this.uuid}) {
+    path = "https://run.mocky.io/v3/$uuid";
+  }
 
   @override
   State<AboutPage> createState() => _AboutPageState();
 }
 
-///Use [Dio] get detailed data about selected hotel.
-///Load into widget if "ok" else output error message
 class _AboutPageState extends State<AboutPage> {
-  final Dio _dio = Dio();
   late Hotel _hotel;
-  String name = "";
-  bool isLoading = false;
-  bool hasError = false;
-  String errorMessage = "";
 
   static const List<String> details = [
     "Country",
@@ -32,12 +29,6 @@ class _AboutPageState extends State<AboutPage> {
     "Country",
     "Price",
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    getHotelDetail();
-  }
 
   List<Widget> getHotelDetails(Hotel h) {
     List<String> values = [
@@ -63,6 +54,7 @@ class _AboutPageState extends State<AboutPage> {
         )
     ];
   }
+
   List<Widget> getHotelServices(Hotel h) {
     var services = h.services;
     return [
@@ -93,89 +85,73 @@ class _AboutPageState extends State<AboutPage> {
     ];
   }
 
-  void getHotelDetail() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    try {
-      var response = await _dio.get("https://run.mocky.io/v3/${widget.uuid}");
-      _hotel = Hotel.fromJson(response.data);
-      name = _hotel.name;
-    } on DioError catch (e) {
-      setState(() {
-        hasError = true;
-        errorMessage = e.error;
-        isLoading = false;
-      });
-    }
-    setState(() {
-      isLoading = false;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(name),
-        ),
-        body: !isLoading && hasError
-            ? Center(
-                child: Text(
-                "$errorMessage\nService currently unavailable",
-                textAlign: TextAlign.center,
-              ))
-            : !isLoading && !hasError
-                ? Center(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CarouselSlider(
-                            items: List.generate(
-                                _hotel.photos.length,
-                                (index) => Container(
-                                      margin: const EdgeInsets.all(6.0),
-                                      child: Image.asset(
-                                        "assets/images/${_hotel.photos[index]}",
-                                        fit: BoxFit.contain,
-                                      ),
-                                    )),
-                            options: CarouselOptions(
-                                height: 200, viewportFraction: 0.7),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            alignment: Alignment.centerLeft,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: getHotelDetails(_hotel),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                              alignment: Alignment.centerLeft,
-                              child: const Text("SERVICES")),
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ClipRect(
-                              clipBehavior: Clip.antiAlias,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: getHotelServices(_hotel),
+    return FutureBuilder(
+        future: fetchHotelDetails(widget.path),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(snapshot.hasData ? (snapshot.data! as Hotel).name : ""),
+            ),
+            body: Center(
+              child: (snapshot.hasData)
+                  ? Builder(builder: (BuildContext context) {
+                      _hotel = snapshot.data!;
+                      return Center(
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CarouselSlider(
+                                items: List.generate(
+                                    _hotel.photos.length,
+                                    (index) => Container(
+                                          margin: const EdgeInsets.all(6.0),
+                                          child: Image.asset(
+                                            "assets/images/${_hotel.photos[index]}",
+                                            fit: BoxFit.contain,
+                                          ),
+                                        )),
+                                options: CarouselOptions(
+                                    height: 200, viewportFraction: 0.7),
                               ),
-                            )),
-                      ]))
-                : const Center(
-                    child: CircularProgressIndicator(),
-                  ));
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: getHotelDetails(_hotel),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: const Text("SERVICES")),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ClipRect(
+                                  clipBehavior: Clip.antiAlias,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: getHotelServices(_hotel),
+                                  ),
+                                )),
+                          ]));
+                    })
+                  : (snapshot.hasError)
+                      ? const Text("Service currently unavailable")
+                      : const CircularProgressIndicator(),
+            ),
+          );
+        });
   }
 }

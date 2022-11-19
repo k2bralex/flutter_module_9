@@ -47,7 +47,6 @@ class GridViewModeWidget extends StatelessWidget {
                             bottomRight: Radius.circular(20)))),
                 onPressed: () {
                   Navigator.pushNamed(context, '/detail', arguments: hotelCard.uuid);
-                  //print("Details");
                 },
                 child: const Text("Details"),
               ),

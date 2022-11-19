@@ -47,7 +47,6 @@ class ListViewModeWidget extends StatelessWidget {
                         padding: const EdgeInsets.only(right: 10.0),
                         child: ElevatedButton(
                           onPressed: () {
-                            //print("${card.uuid}");
                             Navigator.pushNamed(context, '/detail',
                                 arguments: hotelCard.uuid);
                           },

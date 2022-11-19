@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_module_9/models/hotel.dart';
 
 import 'about_page.dart';
 import 'home_page.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +16,9 @@ class MyApp extends StatelessWidget {
         initialRoute: "/",
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
-            case MyHomePage.routeName:
+            case HomePage.routeName:
               return MaterialPageRoute(builder: (BuildContext context) {
-                return const MyHomePage(
+                return const HomePage(
                   title: 'Module 9',
                 );
               });
